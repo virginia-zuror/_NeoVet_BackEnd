@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const { connect } = require("./utils/connect");
+const dotenv = require ("dotenv")
+dotenv.config()
+const AppointmentRoutes = require("./api/routes/appointment.routes")
 
 const PORT = process.env.PORT || 8081;
 
@@ -17,11 +20,14 @@ server.use(
 server.use(express.json({ limit: "5mb" }));
 server.use(express.urlencoded({ limit: "5mb", extended: true }));
 
+server.use("/neovet/appointments", AppointmentRoutes)
+
 server.use("*", (req, res, next) => {
   const error = new Error("Route not found");
   error.status = 404;
   return next(error);
 });
+
 server.use((error, req, res) => {
   return res
     .status(error.status || 500)
@@ -31,5 +37,5 @@ server.use((error, req, res) => {
 server.disable("x-powered-by");
 
 server.listen(PORT, () => {
-  console.log(`Server listening on port 🙈: ${PORT}`);
+  console.log(`Server listening on port 🙈: http://localhost:${PORT}`);
 });
