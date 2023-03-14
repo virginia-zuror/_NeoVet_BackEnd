@@ -1,37 +1,36 @@
 const mongoose = require('mongoose')
 
-const AppointmentSchema = new mongoose.Schema(
+const ConsultSchema = new mongoose.Schema(
   {
     date: {
       type: Date,
       required: true,
       trim: true,
     },
-    reason: {
+    vet: {
       type: String,
       required: true,
       trim: true,
     },
-    comments: {
+    exp: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    diagnose: {
       type: String,
       required: false,
       trim: true,
     },
-    state: {
+    treatment: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
-    },
-    validate: {
-      type: Boolean,
-      required: true,
-      trim: true,
-      default: false,
     },
   },
   { timestamps: true }
 )
 
-const Appointment = mongoose.model('Appointment', AppointmentSchema)
+const Consult = mongoose.model('Consult', ConsultSchema)
 
-module.exports = Appointment
+module.exports = Consult
