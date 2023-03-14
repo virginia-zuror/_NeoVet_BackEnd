@@ -3,8 +3,12 @@ const cors = require('cors')
 const { connect } = require('./utils/connect')
 const dotenv = require('dotenv')
 dotenv.config()
+const { configCloudinary } = require('./middlewares/files.middleware')
 const AppointmentRoutes = require('./api/routes/appointment.routes')
 const ConsultRoutes = require('./api/routes/consult.routes')
+const PetRoutes = require('./api/routes/pet.routes')
+
+configCloudinary()
 
 const PORT = process.env.PORT || 8081
 
@@ -23,6 +27,7 @@ server.use(express.urlencoded({ limit: '5mb', extended: true }))
 
 server.use('/neovet/appointments', AppointmentRoutes)
 server.use('/neovet/consults', ConsultRoutes)
+server.use('/neovet/pets', PetRoutes)
 
 server.use('*', (req, res, next) => {
   const error = new Error('Route not found')
