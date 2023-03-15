@@ -1,4 +1,6 @@
 const Admin = require('../models/admin.model')
+const { generateToken } = require('../../utils/token')
+const bcrypt = require('bcrypt')
 
 const getAllAdmins = async (req, res, next) => {
   try {
@@ -12,8 +14,29 @@ const getAllAdmins = async (req, res, next) => {
 const createAdmin = async (req, res, next) => {
   try {
     const newAdmin = new Admin(req.body)
+    const adminExists = await Admin.findOne({ email: newAdmin.email })
+    if (adminExists) {
+      return next('Admin already exists')
+    }
     const createdAdmin = await newAdmin.save()
     return res.status(201).json(createdAdmin)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+const loginUserAdmin = async (req, res, next) => {
+  try {
+    const admin = await Admin.findOne({ email: req.body.email })
+    if (!admin) {
+      return next('Admin not register yet')
+    }
+    if (bcrypt.compareSync(req.body.password, admin.password)) {
+      const token = generateToken(admin._id, admin.email)
+      return res.status(200).json(token)
+    } else {
+      return next('invalid password')
+    }
   } catch (error) {
     return next(error)
   }
@@ -57,4 +80,5 @@ module.exports = {
   updateAdmin,
   deleteAdmin,
   getAdminByID,
+  loginUserAdmin,
 }

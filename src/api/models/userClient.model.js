@@ -45,7 +45,7 @@ const UserClientSchema = new mongoose.Schema(
       default: 'userClient',
       enum: ['userClient', 'userAdmin'],
     },
-    validate: { type: Boolean, required: true, default: false },
+    checked: { type: Boolean, required: true, default: false },
   },
 
   { timestamps: true }

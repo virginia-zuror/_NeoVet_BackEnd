@@ -22,7 +22,7 @@ const AppointmentSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    validate: {
+    checked: {
       type: Boolean,
       required: true,
       trim: true,
