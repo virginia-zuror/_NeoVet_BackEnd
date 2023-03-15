@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 const validator = require('validator')
 
 const UserClientSchema = new mongoose.Schema(
@@ -28,6 +29,8 @@ const UserClientSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      minlength: [8, 'Min 8 characters'],
+      maxlength: [15, 'Max 15 characters'],
     },
     dni: {
       type: String,
@@ -47,6 +50,15 @@ const UserClientSchema = new mongoose.Schema(
 
   { timestamps: true }
 )
+
+UserClientSchema.pre('save', async function (next) {
+  try {
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
+  } catch (error) {
+    next('Error hashing password', error)
+  }
+})
 
 const UserClient = mongoose.model('UserClient', UserClientSchema)
 

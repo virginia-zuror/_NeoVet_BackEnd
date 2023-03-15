@@ -1,4 +1,6 @@
 const UserClient = require('../models/userClient.model')
+const { generateToken } = require('../../utils/token')
+const bcrypt = require('bcrypt')
 
 const getAllUserClients = async (req, res, next) => {
   try {
@@ -12,8 +14,30 @@ const getAllUserClients = async (req, res, next) => {
 const createUserClient = async (req, res, next) => {
   try {
     const newUserClient = new UserClient(req.body)
+    const userExists = await UserClient.findOne({ email: newUserClient.email })
+    if (userExists) {
+      return next('User already exists')
+    }
     const createdUserClient = await newUserClient.save()
+    createUserClient.password = null
     return res.status(201).json(createdUserClient)
+  } catch (error) {
+    return next(error)
+  }
+}
+
+const loginUserClient = async (req, res, next) => {
+  try {
+    const userClient = await UserClient.findOne({ email: req.body.email })
+    if (!userClient) {
+      return next('UserClient not register yet')
+    }
+    if (bcrypt.compareSync(req.body.password, userClient.password)) {
+      const token = generateToken(userClient._id, userClient.email)
+      return res.status(200).json(token)
+    } else {
+      return next('invalid password')
+    }
   } catch (error) {
     return next(error)
   }
@@ -62,4 +86,5 @@ module.exports = {
   updateUserClient,
   deleteUserClient,
   getUserClientByID,
+  loginUserClient,
 }
