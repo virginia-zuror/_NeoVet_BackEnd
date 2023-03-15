@@ -18,7 +18,7 @@ const isAuthClient = async (req, res, next) => {
   }
 }
 
-module.exports = { isAuthClient }
+
 
 const isAuthAdmin = async (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
@@ -35,7 +35,7 @@ const isAuthAdmin = async (req, res, next) => {
   }
 }
 
-module.exports = { isAuthAdmin }
+
 
 const isAuthStaff = async (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
@@ -52,4 +52,4 @@ const isAuthStaff = async (req, res, next) => {
   }
 }
 
-module.exports = { isAuthStaff }
+module.exports = { isAuthClient, isAuthAdmin, isAuthStaff }
