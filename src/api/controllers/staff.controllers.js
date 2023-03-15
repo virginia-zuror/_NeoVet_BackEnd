@@ -30,6 +30,8 @@ const loginUserStaff = async (req, res, next) => {
     const staff = await Staff.findOne({ email: req.body.email })
     if (!staff) {
       return next('Staff not register yet')
+    } else if (!staff.checked) {
+      return next('User waiting for approval')
     }
     if (bcrypt.compareSync(req.body.password, staff.password)) {
       const token = generateToken(staff._id, staff.email)

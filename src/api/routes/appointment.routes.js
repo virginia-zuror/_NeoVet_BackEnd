@@ -1,5 +1,9 @@
 const express = require('express')
-
+const {
+  isAuthClient,
+  isAuthAdmin,
+  isAuthStaff,
+} = require('../../middlewares/auth.middleware')
 const AppointmentRoutes = express.Router()
 
 const {
@@ -10,10 +14,18 @@ const {
   getAppointmentByID,
 } = require('../controllers/appointments.controllers')
 
-AppointmentRoutes.get('/', getAllAppointments)
-AppointmentRoutes.post('/', createAppointment)
-AppointmentRoutes.put('/:id', updateAppointment)
-AppointmentRoutes.delete('/:id', deleteAppointment)
-AppointmentRoutes.get('/:id', getAppointmentByID)
+AppointmentRoutes.get('/', [isAuthAdmin, isAuthStaff], getAllAppointments)
+AppointmentRoutes.post(
+  '/',
+  [isAuthClient, isAuthAdmin, isAuthStaff],
+  createAppointment
+)
+AppointmentRoutes.put('/:id', [isAuthAdmin, isAuthStaff], updateAppointment)
+AppointmentRoutes.delete('/:id', [isAuthStaff, isAuthAdmin], deleteAppointment)
+AppointmentRoutes.get(
+  '/:id',
+  [isAuthAdmin, isAuthClient, isAuthStaff],
+  getAppointmentByID
+)
 
 module.exports = AppointmentRoutes

@@ -1,5 +1,9 @@
 const express = require('express')
-const { isAuth } = require('../../middlewares/auth.middleware')
+const {
+  isAuthClient,
+  isAuthAdmin,
+  isAuthStaff,
+} = require('../../middlewares/auth.middleware')
 
 const UserClientsRoutes = express.Router()
 
@@ -12,11 +16,19 @@ const {
   loginUserClient,
 } = require('../controllers/userClient.controllers')
 
-UserClientsRoutes.get('/', getAllUserClients)
 UserClientsRoutes.post('/', createUserClient)
-UserClientsRoutes.patch('/:id', updateUserClient)
-UserClientsRoutes.delete('/:id', deleteUserClient)
-UserClientsRoutes.get('/:id', [isAuth], getUserClientByID)
 UserClientsRoutes.post('/login', loginUserClient)
+UserClientsRoutes.get('/', [isAuthAdmin, isAuthStaff], getAllUserClients)
+UserClientsRoutes.patch(
+  '/:id',
+  [isAuthAdmin, isAuthClient, isAuthStaff],
+  updateUserClient
+)
+UserClientsRoutes.delete('/:id', [isAuthAdmin, isAuthStaff], deleteUserClient)
+UserClientsRoutes.get(
+  '/:id',
+  [isAuthClient, isAuthAdmin, isAuthStaff],
+  getUserClientByID
+)
 
 module.exports = UserClientsRoutes
