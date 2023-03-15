@@ -1,6 +1,6 @@
-const express = require("express");
+const express = require('express')
 
-const UserClientsRoutes = express.Router();
+const UserClientsRoutes = express.Router()
 
 const {
   getAllUserClients,
@@ -8,12 +8,12 @@ const {
   updateUserClient,
   deleteUserClient,
   getUserClientByID,
-} = require("../controllers/userClient.controllers");
+} = require('../controllers/userClient.controllers')
 
-UserClientsRoutes.get("/", getAllUserClients);
-UserClientsRoutes.post("/", createUserClient);
-UserClientsRoutes.patch("/:id", updateUserClient);
-UserClientsRoutes.delete("/:id", deleteUserClient);
-UserClientsRoutes.get("/:id", getUserClientByID);
+UserClientsRoutes.get('/', getAllUserClients)
+UserClientsRoutes.post('/', createUserClient)
+UserClientsRoutes.patch('/:id', updateUserClient)
+UserClientsRoutes.delete('/:id', deleteUserClient)
+UserClientsRoutes.get('/:id', getUserClientByID)
 
-module.exports = UserClientsRoutes;
+module.exports = UserClientsRoutes

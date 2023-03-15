@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
+const validator = require('validator')
 
 const UserClientSchema = new mongoose.Schema(
   {
@@ -19,6 +20,7 @@ const UserClientSchema = new mongoose.Schema(
     },
     email: {
       type: String,
+      validate: [validator.isEmail, 'Email not valid'],
       required: true,
       trim: true,
     },
@@ -32,19 +34,20 @@ const UserClientSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    pets: [{ type: mongoose.Schema.Types.ObjectId, ref: "Pet" }],
+    pets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet' }],
     rol: {
       type: String,
       required: true,
       trim: true,
-      default: "userClient",
+      default: 'userClient',
+      enum: ['userClient', 'userAdmin'],
     },
     validate: { type: Boolean, required: true, default: false },
   },
 
   { timestamps: true }
-);
+)
 
-const UserClient = mongoose.model("UserClient", UserClientSchema);
+const UserClient = mongoose.model('UserClient', UserClientSchema)
 
-module.exports = UserClient;
+module.exports = UserClient
