@@ -9,6 +9,7 @@ const ConsultRoutes = require('./api/routes/consult.routes')
 const PetRoutes = require('./api/routes/pet.routes')
 const UserClientsRoutes = require('./api/routes/userClient.routes')
 const StaffRoutes = require('./api/routes/staff.routes')
+const AdminRoutes = require('./api/routes/admin.routes')
 
 configCloudinary()
 
@@ -32,6 +33,7 @@ server.use('/neovet/consults', ConsultRoutes)
 server.use('/neovet/pets', PetRoutes)
 server.use('/neovet/userclients', UserClientsRoutes)
 server.use('/neovet/staff', StaffRoutes)
+server.use('/neovet/admins', AdminRoutes)
 
 server.use('*', (req, res, next) => {
   const error = new Error('Route not found')
