@@ -1,50 +1,52 @@
-const express = require("express");
-const cors = require("cors");
-const { connect } = require("./utils/connect");
-const dotenv = require("dotenv");
-dotenv.config();
-const { configCloudinary } = require("./middlewares/files.middleware");
-const AppointmentRoutes = require("./api/routes/appointment.routes");
-const ConsultRoutes = require("./api/routes/consult.routes");
-const PetRoutes = require("./api/routes/pet.routes");
-const UserClientsRoutes = require("./api/routes/userClient.routes");
+const express = require('express')
+const cors = require('cors')
+const { connect } = require('./utils/connect')
+const dotenv = require('dotenv')
+dotenv.config()
+const { configCloudinary } = require('./middlewares/files.middleware')
+const AppointmentRoutes = require('./api/routes/appointment.routes')
+const ConsultRoutes = require('./api/routes/consult.routes')
+const PetRoutes = require('./api/routes/pet.routes')
+const UserClientsRoutes = require('./api/routes/userClient.routes')
+const StaffRoutes = require('./api/routes/staff.routes')
 
-configCloudinary();
+configCloudinary()
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8081
 
-const server = express();
-connect();
+const server = express()
+connect()
 
 server.use(
   cors({
     origin: [`http://localhost:${PORT}`],
     credentials: true,
   })
-);
+)
 
-server.use(express.json({ limit: "5mb" }));
-server.use(express.urlencoded({ limit: "5mb", extended: true }));
+server.use(express.json({ limit: '5mb' }))
+server.use(express.urlencoded({ limit: '5mb', extended: true }))
 
-server.use("/neovet/appointments", AppointmentRoutes);
-server.use("/neovet/consults", ConsultRoutes);
-server.use("/neovet/pets", PetRoutes);
-server.use("/neovet/userclients", UserClientsRoutes);
+server.use('/neovet/appointments', AppointmentRoutes)
+server.use('/neovet/consults', ConsultRoutes)
+server.use('/neovet/pets', PetRoutes)
+server.use('/neovet/userclients', UserClientsRoutes)
+server.use('/neovet/staff', StaffRoutes)
 
-server.use("*", (req, res, next) => {
-  const error = new Error("Route not found");
-  error.status = 404;
-  return next(error);
-});
+server.use('*', (req, res, next) => {
+  const error = new Error('Route not found')
+  error.status = 404
+  return next(error)
+})
 
 server.use((error, req, res) => {
   return res
     .status(error.status || 500)
-    .json(error.message || "Unexpected error");
-});
+    .json(error.message || 'Unexpected error')
+})
 
-server.disable("x-powered-by");
+server.disable('x-powered-by')
 
 server.listen(PORT, () => {
-  console.log(`Server listening on port 🙈: http://localhost:${PORT}`);
-});
+  console.log(`Server listening on port 🙈: http://localhost:${PORT}`)
+})
