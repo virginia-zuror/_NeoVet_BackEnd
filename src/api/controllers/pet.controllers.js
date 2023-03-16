@@ -3,10 +3,7 @@ const Pet = require('../models/pet.model')
 
 const getAllPets = async (req, res, next) => {
   try {
-    const allPets = await Pet.find()
-      .populate('record')
-      .populate('appoint')
-      .populate('weight')
+    const allPets = await Pet.find().populate('record').populate('appoint')
     return res.status(200).json(allPets)
   } catch (error) {
     return next(error)

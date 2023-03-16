@@ -1,6 +1,7 @@
 const UserClient = require('../models/userClient.model')
 const { generateToken } = require('../../utils/token')
 const bcrypt = require('bcrypt')
+const Admin = require('../models/admin.model')
 
 const getAllUserClients = async (req, res, next) => {
   try {
@@ -12,6 +13,7 @@ const getAllUserClients = async (req, res, next) => {
 }
 
 const createUserClient = async (req, res, next) => {
+  const { admin } = req.body
   try {
     const newUserClient = new UserClient(req.body)
     const userExists = await UserClient.findOne({ email: newUserClient.email })
@@ -19,6 +21,12 @@ const createUserClient = async (req, res, next) => {
       return next('User already exists')
     }
     const createdUserClient = await newUserClient.save()
+    const idClient = createdUserClient._id.toString()
+    await Admin.findByIdAndUpdate(
+      admin,
+      { $push: { clients: idClient } },
+      { new: true }
+    )
     createUserClient.password = null
     return res.status(201).json(createdUserClient)
   } catch (error) {
