@@ -16,6 +16,16 @@ const StaffSchema = new mongoose.Schema(
       default: 'vet',
       enum: ['vet', 'aux'],
     },
+    avatar: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+    speciality: {
+      type: String,
+      required: false,
+      trim: true,
+    },
     col: {
       type: String,
       trim: true,

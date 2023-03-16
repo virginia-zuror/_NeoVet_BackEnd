@@ -18,8 +18,6 @@ const isAuthClient = async (req, res, next) => {
   }
 }
 
-
-
 const isAuthAdmin = async (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '')
   if (!token) {
@@ -34,8 +32,6 @@ const isAuthAdmin = async (req, res, next) => {
     return next(error)
   }
 }
-
-
 
 const isAuthStaff = async (req, res, next) => {
   const token = req.headers.authorization?.replace('Bearer ', '')

@@ -1,7 +1,6 @@
 const Consult = require('../models/consult.model.js')
 const Pet = require('../models/pet.model')
 
-
 const getAllConsults = async (req, res, next) => {
   try {
     const allConsults = await Consult.find()
