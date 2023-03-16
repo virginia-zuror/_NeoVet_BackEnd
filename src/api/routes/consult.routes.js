@@ -13,10 +13,12 @@ const {
   updateConsult,
   deleteConsult,
   getConsultByID,
+  createConsultByPetId,
 } = require('../controllers/consult.controllers')
 
 ConsultRoutes.get('/', [isAuthAdmin, isAuthStaff], getAllConsults)
-ConsultRoutes.post('/', [isAuthStaff], createConsult)
+/* ConsultRoutes.post('/', [isAuthStaff], createConsult) */
+ConsultRoutes.post('/', [isAuthStaff], createConsultByPetId)
 ConsultRoutes.put('/:id', [isAuthStaff], updateConsult)
 ConsultRoutes.delete('/:id', [isAuthStaff, isAuthAdmin], deleteConsult)
 ConsultRoutes.get(

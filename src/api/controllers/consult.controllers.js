@@ -1,4 +1,6 @@
 const Consult = require('../models/consult.model.js')
+const Pet = require('../models/pet.model')
+
 
 const getAllConsults = async (req, res, next) => {
   try {
@@ -9,11 +11,28 @@ const getAllConsults = async (req, res, next) => {
   }
 }
 
-const createConsult = async (req, res, next) => {
+/* const createConsult = async (req, res, next) => {
   try {
     const newConsult = new Consult(req.body)
     const createdConsult = await newConsult.save()
+    const id = createdConsult._id.toString()
     return res.status(201).json(createdConsult)
+  } catch (error) {
+    return next(error)
+  }
+} */
+const createConsultByPetId = async (req, res, next) => {
+  const { pet } = req.body
+  try {
+    const newConsultByPetId = new Consult(req.body)
+    const createdConsultByPetId = await newConsultByPetId.save()
+    const idConsult = createdConsultByPetId._id.toString()
+    await Pet.findByIdAndUpdate(
+      pet,
+      { $push: { record: idConsult } },
+      { new: true }
+    )
+    return res.status(201).json(createdConsultByPetId)
   } catch (error) {
     return next(error)
   }
@@ -53,8 +72,8 @@ const getConsultByID = async (req, res, next) => {
 
 module.exports = {
   getAllConsults,
-  createConsult,
   updateConsult,
   deleteConsult,
   getConsultByID,
+  createConsultByPetId,
 }
