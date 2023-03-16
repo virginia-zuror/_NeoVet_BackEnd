@@ -22,7 +22,7 @@ const PetSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    weight: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Consult' }],
+    weight: [{ type: mongoose.Schema.Types.Number, ref: 'Consult' }],
     gender: {
       type: String,
       enum: ['male', 'female', 'unknown'],

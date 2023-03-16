@@ -26,11 +26,15 @@ const createConsultByPetId = async (req, res, next) => {
     const newConsultByPetId = new Consult(req.body)
     const createdConsultByPetId = await newConsultByPetId.save()
     const idConsult = createdConsultByPetId._id.toString()
+    const currentWeight = createdConsultByPetId.weight
     await Pet.findByIdAndUpdate(
       pet,
       { $push: { record: idConsult } },
       { new: true }
     )
+    const petFind = await Pet.findById(pet)
+    petFind.weight.push(currentWeight)
+    await petFind.save()
     return res.status(201).json(createdConsultByPetId)
   } catch (error) {
     return next(error)
