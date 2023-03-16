@@ -9,7 +9,7 @@ const ConsultRoutes = express.Router()
 
 const {
   getAllConsults,
-  createConsult,
+  //createConsult,
   updateConsult,
   deleteConsult,
   getConsultByID,

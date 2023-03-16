@@ -18,6 +18,13 @@ const PORT = process.env.PORT || 8081
 const server = express()
 connect()
 
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH')
+  res.header('Access-Control-Allow-Credentials', true)
+  res.header('Access-Control-Allow-Headers', 'Content-Type')
+  next()
+})
+
 server.use(
   cors({
     origin: [`http://localhost:${PORT}`],

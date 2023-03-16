@@ -1,6 +1,7 @@
 const Staff = require('../models/staff.model')
 const { generateToken } = require('../../utils/token')
 const bcrypt = require('bcrypt')
+const { deleteImgCloudinary } = require('../../middlewares/files.middleware')
 
 const getAllStaff = async (req, res, next) => {
   try {
@@ -13,7 +14,10 @@ const getAllStaff = async (req, res, next) => {
 
 const createStaff = async (req, res, next) => {
   try {
-    const newStaff = new Staff(req.body)
+    const newStaff = new Staff({
+      ...req.body,
+      avatar: req.file ? req.file.path : 'No Photo',
+    })
     const staffExists = await Staff.findOne({ email: newStaff.email })
     if (staffExists) {
       return next('Staff already exists')
@@ -47,6 +51,14 @@ const loginUserStaff = async (req, res, next) => {
 const updateStaff = async (req, res, next) => {
   try {
     const { id } = req.params
+    const newStaff = new Staff(req.body)
+    newStaff._id = id
+
+    const originalStaff = await Staff.findById(id)
+    if (req.file) {
+      deleteImgCloudinary(originalStaff.avatar)
+      newStaff.avatar = req.file.path
+    }
     const updatedStaff = await Staff.findByIdAndUpdate(id, req.body, {
       new: true,
     })

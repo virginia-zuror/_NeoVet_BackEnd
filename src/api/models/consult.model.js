@@ -17,6 +17,11 @@ const ConsultSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    weight: {
+      type: Number,
+      required: false,
+      trim: true,
+    },
     diagnose: {
       type: String,
       required: false,

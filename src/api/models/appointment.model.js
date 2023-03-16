@@ -19,6 +19,8 @@ const AppointmentSchema = new mongoose.Schema(
     },
     state: {
       type: String,
+      enum: ['pending', 'done', 'confirmed'],
+      default: 'pending',
       required: true,
       trim: true,
     },
