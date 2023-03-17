@@ -1,4 +1,6 @@
 const Appointment = require('../models/appointment.model.js')
+const Staff = require('../models/staff.model.js')
+const Pet = require("../models/pet.model")
 
 const getAllAppointments = async (req, res, next) => {
   try {
@@ -10,9 +12,22 @@ const getAllAppointments = async (req, res, next) => {
 }
 
 const createAppointment = async (req, res, next) => {
+  const {staff} = req.body
+  const {pet} = req.body
   try {
     const newAppointment = new Appointment(req.body)
     const createdAppointment = await newAppointment.save()
+    const idAppointment = createdAppointment._id.toString()
+    await Staff.findByIdAndUpdate(
+      staff,
+      { $push: { appointments: idAppointment } },
+      { new: true }
+    )
+    await Pet.findByIdAndUpdate(
+      pet,
+      { $push: { appoint: idAppointment } },
+      { new: true }
+    )
     return res.status(201).json(createdAppointment)
   } catch (error) {
     return next(error)

@@ -1,5 +1,6 @@
 const { deleteImgCloudinary } = require('../../middlewares/files.middleware')
 const Pet = require('../models/pet.model')
+const UserClient = require("../models/userClient.model")
 
 const getAllPets = async (req, res, next) => {
   try {
@@ -11,12 +12,19 @@ const getAllPets = async (req, res, next) => {
 }
 
 const createPet = async (req, res, next) => {
+  const { client } = req.body
   try {
     const newPet = new Pet({
       ...req.body,
       photo: req.file ? req.file.path : 'No Photo',
     })
     const createdPet = await newPet.save()
+    const idPet = createdPet._id.toString()
+    await UserClient.findByIdAndUpdate(
+      client,
+      { $push: { pets: idPet } },
+      { new: true }
+    )
     return res.status(201).json(createdPet)
   } catch (error) {
     return next(error)
