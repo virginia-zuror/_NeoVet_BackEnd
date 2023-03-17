@@ -27,7 +27,7 @@ const createUserClient = async (req, res, next) => {
       { $push: { clients: idClient } },
       { new: true }
     )
-    createUserClient.password = null
+    createdUserClient.password = null
     return res.status(201).json(createdUserClient)
   } catch (error) {
     return next(error)

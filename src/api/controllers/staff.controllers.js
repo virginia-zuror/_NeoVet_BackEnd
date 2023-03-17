@@ -23,6 +23,7 @@ const createStaff = async (req, res, next) => {
       return next('Staff already exists')
     }
     const createdStaff = await newStaff.save()
+    createdStaff.password = null
     return res.status(201).json(createdStaff)
   } catch (error) {
     return next(error)

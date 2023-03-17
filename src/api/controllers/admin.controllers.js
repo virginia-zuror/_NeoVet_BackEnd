@@ -19,6 +19,7 @@ const createAdmin = async (req, res, next) => {
       return next('Admin already exists')
     }
     const createdAdmin = await newAdmin.save()
+    createdAdmin.password = null
     return res.status(201).json(createdAdmin)
   } catch (error) {
     return next(error)
