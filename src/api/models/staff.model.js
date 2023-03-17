@@ -50,6 +50,9 @@ const StaffSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    appointments: [{
+      type: mongoose.Schema.Types.ObjectId, ref:"Appointment",
+    }],
     checked: { type: Boolean, default: false },
   },
   { timestamps: true }

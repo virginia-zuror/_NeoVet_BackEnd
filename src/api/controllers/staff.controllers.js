@@ -7,7 +7,7 @@ const Admin = require("../models/admin.model")
 
 const getAllStaff = async (req, res, next) => {
   try {
-    const allStaff = await Staff.find()
+    const allStaff = await Staff.find().populate("appointments")
     return res.status(200).json(allStaff)
   } catch (error) {
     return next(error)

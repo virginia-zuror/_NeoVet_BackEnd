@@ -32,11 +32,6 @@ const PetSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    age: {
-      type: Number,
-      required: true,
-      trim: true,
-    },
     record: [
       {
         type: mongoose.Schema.Types.ObjectId,
