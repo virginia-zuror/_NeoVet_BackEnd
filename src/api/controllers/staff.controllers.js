@@ -2,6 +2,8 @@ const Staff = require('../models/staff.model')
 const { generateToken } = require('../../utils/token')
 const bcrypt = require('bcrypt')
 const { deleteImgCloudinary } = require('../../middlewares/files.middleware')
+const Admin = require("../models/admin.model")
+
 
 const getAllStaff = async (req, res, next) => {
   try {
@@ -13,6 +15,7 @@ const getAllStaff = async (req, res, next) => {
 }
 
 const createStaff = async (req, res, next) => {
+  const { admin } = req.body
   try {
     const newStaff = new Staff({
       ...req.body,
@@ -23,6 +26,12 @@ const createStaff = async (req, res, next) => {
       return next('Staff already exists')
     }
     const createdStaff = await newStaff.save()
+    const idStaff = createdStaff._id.toString()
+    await Admin.findByIdAndUpdate(
+      admin,
+      { $push: { staff: idStaff } },
+      { new: true }
+    )
     createdStaff.password = null
     return res.status(201).json(createdStaff)
   } catch (error) {

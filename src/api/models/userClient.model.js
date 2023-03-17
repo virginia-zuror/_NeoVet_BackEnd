@@ -9,15 +9,34 @@ const UserClientSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
-    adress: {
-      type: String,
-      required: true,
-      trim: true,
+    address: {
+      street: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      city: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      region: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+
     },
     telephone: {
       type: String,
       required: true,
       trim: true,
+      validate: [validator.isMobilePhone, "Enter a correct Phone Number"]
     },
     email: {
       type: String,
