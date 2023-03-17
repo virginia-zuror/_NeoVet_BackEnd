@@ -22,10 +22,34 @@ const AdminSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    address: {
+    telephone: {
       type: String,
       required: true,
       trim: true,
+      validate: [validator.isMobilePhone, "Enter a correct Phone Number"]
+    },
+    address: {
+      street: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      city: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      region: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+
     },
     staff: [
       {

@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+
 const PetSchema = new mongoose.Schema(
   {
     name: {
@@ -51,6 +54,17 @@ const PetSchema = new mongoose.Schema(
       required: false,
       trim: true,
     },
+    birth: {
+      type: Date,
+      required: false,
+      trim: true,
+      validate: {
+        validator: (v) =>
+          v instanceof Date &&
+          v.getFullYear() >= 2000 &&
+          v.getFullYear() <= currentYear,
+        message: `Year between 2000 to the ${currentYear}`
+    }},
   },
   {
     timestamps: true,
