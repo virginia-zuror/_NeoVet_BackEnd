@@ -44,6 +44,7 @@ const loginUserClient = async (req, res, next) => {
     }
     if (bcrypt.compareSync(req.body.password, userClient.password)) {
       const token = generateToken(userClient._id, userClient.email)
+      userClient.password = null
       return res.status(200).json({userClient, token})
     } else {
       return next('invalid password')
