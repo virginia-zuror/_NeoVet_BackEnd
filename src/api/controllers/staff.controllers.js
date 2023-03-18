@@ -49,7 +49,7 @@ const loginUserStaff = async (req, res, next) => {
     }
     if (bcrypt.compareSync(req.body.password, staff.password)) {
       const token = generateToken(staff._id, staff.email)
-      return res.status(200).json(token)
+      return res.status(200).json({staff, token})
     } else {
       return next('invalid password')
     }
