@@ -25,15 +25,10 @@ server.use((req, res, next) => {
   next()
 })
 
-server.use(
-  cors({
-    origin: [`http://localhost:${PORT}`],
-    credentials: true,
-  })
-)
+server.use(cors())
 
 server.use(express.json({ limit: '5mb' }))
-server.use(express.urlencoded({ limit: '5mb', extended: true }))
+server.use(express.urlencoded({ limit: '5mb', extended: false }))
 
 server.use('/neovet/appointments', AppointmentRoutes)
 server.use('/neovet/consults', ConsultRoutes)
